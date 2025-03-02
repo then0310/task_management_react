@@ -1,51 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import config from './config';
+import React, { useState } from 'react';
+import { useTasks } from './hooks/useTasks';
 import TaskForm from './components/TaskForm';
-import TaskList from './components/TaskList';
+import TaskTable from './components/TaskTable';
 
 const App = () => {
-  const [tasks, setTasks] = useState([]);
+  const { tasks, addTask, markTaskCompleted } = useTasks();
   const [taskName, setTaskName] = useState("");
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 }); // Manage pagination state here
 
-  useEffect(() => {
-    fetch(`${config.apiUrl}/tasks`)
-      .then((response) => response.json())
-      .then((data) => setTasks(data));
-  }, []);
-
-  const addTask = () => {
-    if (taskName.trim()) {
-      fetch(`${config.apiUrl}/tasks`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: taskName }),
-      })
-        .then((response) => response.json())
-        .then((newTask) => setTasks([...tasks, newTask]));
-      setTaskName("");
-    }
-  };
-
-  const markTaskCompleted = (taskId) => {
-    fetch(`${config.apiUrl}/tasks/${taskId}`, {
-      method: "PUT",
-    }).then(() => {
-      setTasks(
-        tasks.map((task) =>
-          task.id === taskId ? { ...task, isCompleted: true } : task
-        )
-      );
-    });
+  const handleAddTask = async () => {
+    await addTask(taskName); // Add the task
+    setTaskName(""); // Clear the input field
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+    <div className="min-h-screen h-screen bg-gray-100 flex justify-center items-center p-4 md:p-8">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-screen-md md:max-w-screen-lg h-full flex flex-col">
+        {/* Sticky Header */}
         <div className="sticky top-0 bg-white py-4 z-10">
           <h1 className="text-3xl font-bold text-center mb-6 text-gray-700">Task Management</h1>
-          <TaskForm taskName={taskName} setTaskName={setTaskName} addTask={addTask} />
+          <TaskForm
+            taskName={taskName}
+            setTaskName={setTaskName}
+            addTask={handleAddTask}
+          />
         </div>
-        <TaskList tasks={tasks} markTaskCompleted={markTaskCompleted} />
+
+        {/* Scrollable Table Container */}
+        <div className="flex-1 overflow-y-auto">
+          <TaskTable
+            tasks={tasks}
+            markTaskCompleted={markTaskCompleted}
+            pagination={pagination} // Pass pagination state
+            setPagination={setPagination} // Pass setPagination function
+          />
+        </div>
       </div>
     </div>
   );
