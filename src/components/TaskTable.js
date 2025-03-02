@@ -53,21 +53,21 @@ const TaskTable = ({ tasks, markTaskCompleted, pagination, setPagination }) => {
     columns,
     state: {
       sorting,
-      pagination, // Ensure pagination state persists
+      pagination,
     },
-    manualPagination: false, // Keep client-side pagination
+    manualPagination: false,
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    autoResetPageIndex: false, // Prevent table from resetting to page 1 on data change
+    autoResetPageIndex: false,
   });
 
   return (
-    <div>
+    <div className="flex flex-col h-full">
       <div className="bg-white sticky top-0 z-10 shadow-sm">
-        <table className="w-full">
+        <table className="w-full table-fixed">
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
@@ -89,9 +89,9 @@ const TaskTable = ({ tasks, markTaskCompleted, pagination, setPagination }) => {
             ))}
           </thead>
         </table>
-        </div>
-        <div className="overflow-y-auto flex-grow">
-    <table className="w-full">
+      </div>
+      <div className="overflow-y-auto flex-grow">
+        <table className="w-full table-fixed">
           <tbody>
             {table.getRowModel().rows.map((row) => (
               <tr key={row.id} className="hover:bg-gray-50">
