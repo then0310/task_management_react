@@ -14,8 +14,8 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen h-screen bg-gray-100 flex justify-center items-center p-4 md:p-8">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-screen-md md:max-w-screen-lg h-full flex flex-col">
+    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4 md:p-8">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-screen-md md:max-w-screen-lg h-[calc(100vh-100px)] flex flex-col">
         {/* Sticky Header */}
         <div className="sticky top-0 bg-white py-4 z-10">
           <h1 className="text-3xl font-bold text-center mb-6 text-gray-700">Task Management</h1>
@@ -26,13 +26,13 @@ const App = () => {
           />
         </div>
 
-        {/* Scrollable Table Container */}
-        <div className="flex-1 overflow-y-auto">
+        {/* Adjusted Scrollable Table Container */}
+        <div className="flex-grow overflow-auto">
           <TaskTable
             tasks={tasks}
             markTaskCompleted={markTaskCompleted}
-            pagination={pagination} // Pass pagination state
-            setPagination={setPagination} // Pass setPagination function
+            pagination={pagination} 
+            setPagination={setPagination} 
           />
         </div>
       </div>

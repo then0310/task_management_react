@@ -96,12 +96,9 @@ const TaskTable = ({ tasks, markTaskCompleted, pagination, setPagination }) => {
             {table.getRowModel().rows.map((row) => (
               <tr key={row.id} className="hover:bg-gray-50">
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="p-2 md:table-cell block text-sm md:text-base">
-                    <div className="md:hidden font-semibold">
-                      {cell.column.columnDef.header}:
-                    </div>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
+                  <td key={cell.id} className="p-2 text-sm md:text-base">
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
                 ))}
               </tr>
             ))}
